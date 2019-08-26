@@ -1,5 +1,6 @@
 import sys
 import datetime
+import time
 
 from PyQt5 import QtWidgets
 from PyQt5 import uic
@@ -8,6 +9,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QAxContainer import *
+from PyQt5.QtCore import QThread, pyqtSignal
+from threading import Thread
 
 
 class Form(QtWidgets.QDialog):
@@ -43,7 +46,7 @@ class Form(QtWidgets.QDialog):
     
     def end(self):
         # TODO: monitoring을 종료시키기
-        pass
+        self.ui.lblRunningTime.setText('0초')
     
     def getData(self):
         pass
@@ -55,7 +58,13 @@ class Form(QtWidgets.QDialog):
         pass
     
     def monitoring(self):
-        pass
+        self.monitoringThread = MonitoringThread() # 쓰레드 생성
+        self.ui.btnEnd.clicked.connect(self.monitoringThread.terminate)
+        self.monitoringThread.sigUpdate.connect(self.updated)
+        self.monitoringThread.start() # 쓰레드 시작
+    
+    def updated(self, duringTime):
+        self.ui.lblRunningTime.setText("%00d초" % duringTime)
     
     def sellPriceApply(self):
         self.upperLimit = self.ui.txtUpperLimit.text()
@@ -77,6 +86,25 @@ class Form(QtWidgets.QDialog):
         ret = self.kiwoom.dynamicCall("GetConnectState()")
         _logState = "로그인 되어 있습니다." if ret else "로그인 되어 있지 않습니다."
         QMessageBox.about(self, "로그인 상태", _logState)
+
+
+
+
+class MonitoringThread(QThread):
+
+    sigUpdate = pyqtSignal(int)
+    def __init__(self):
+        QThread.__init__(self)
+
+    def __del__(self):
+        self.wait()
+
+    def run(self):
+        i = 1
+        while True:
+            time.sleep(1)
+            self.sigUpdate.emit(i)
+            i += 1
 
 
 

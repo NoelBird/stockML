@@ -28,17 +28,33 @@ class Form(QtWidgets.QDialog):
         self.ui.btnSellPriceApply.clicked.connect(self.sellPriceApply)
         self.ui.btnSellPriceCancel.clicked.connect(self.sellPriceCancel)
 
-        self.ui.actionLogIn.triggered.connect(self.login) # 인공지능 투자 실행
-        self.ui.actionLogOut.triggered.connect(self.logout) # 인공지능 투자 실행
-        self.ui.actionLogState.triggered.connect(self.logState) # 인공지능 투자 실행
+        self.ui.actionLogIn.triggered.connect(self.login)
+        self.ui.actionLogOut.triggered.connect(self.logout)
+        self.ui.actionLogState.triggered.connect(self.logState)
 
         self.ui.show()
         # self.ui.previewSmall.setPixmap(QPixmap('cat04_256.png'))
     
     def start(self):
-        pass
+        data = self.getData() # 데이터 얻어오기
+        result = self.analysis() # 분석(LSTM)
+        self.buy() # 매입 요청
+        self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
     
     def end(self):
+        # TODO: monitoring을 종료시키기
+        pass
+    
+    def getData(self):
+        pass
+
+    def analysis(self): #TODO: 기본적으로 LSTM
+        pass #TODO: 내일하기
+    
+    def buy(self):
+        pass
+    
+    def monitoring(self):
         pass
     
     def sellPriceApply(self):

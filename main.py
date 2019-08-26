@@ -46,7 +46,7 @@ class Form(QtWidgets.QDialog):
     
     def end(self):
         # TODO: monitoring을 종료시키기
-        self.ui.lblRunningTime.setText('0초')
+        self.ui.lblRunningTime.setText('0:00:00')
     
     def getData(self):
         pass
@@ -55,6 +55,8 @@ class Form(QtWidgets.QDialog):
         pass #TODO: 내일하기
     
     def buy(self):
+        # res = self.kiwoom.dynamicCall("GetLoginInfo()")
+        # print(res)
         pass
     
     def monitoring(self):
@@ -64,7 +66,7 @@ class Form(QtWidgets.QDialog):
         self.monitoringThread.start() # 쓰레드 시작
     
     def updated(self, duringTime):
-        self.ui.lblRunningTime.setText("%00d초" % duringTime)
+        self.ui.lblRunningTime.setText("%s" % datetime.timedelta(seconds=duringTime))
     
     def sellPriceApply(self):
         self.upperLimit = self.ui.txtUpperLimit.text()

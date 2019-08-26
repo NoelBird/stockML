@@ -244,7 +244,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>0일 0시 0분</string>
+      <string>0:00:00</string>
      </property>
     </widget>
     <widget class="QPushButton" name="btnStart">

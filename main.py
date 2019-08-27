@@ -330,12 +330,10 @@ class Form(QtWidgets.QDialog):
     def analysis(self): #TODO: 기본적으로 LSTM
         pass #TODO: 내일하기
     
-<<<<<<< HEAD
     def buy(self):
         res = self.kiwoom.dynamicCall("GetLoginInfo(\"USER_NAME\")")
         print(res)
         # pass
->>>>>>> af2019f192ba7bf18e48aec170a63901db615433
     
     def monitoring(self):
         self.monitoringThread = MonitoringThread() # 쓰레드 생성

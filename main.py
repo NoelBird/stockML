@@ -303,9 +303,9 @@ class Form(QtWidgets.QDialog):
         data = self.getData("005930","20190826") # 데이터 얻어오기
         print(data)
         print('Done')
-        # result = self.analysis() # 분석(LSTM)
-        # self.buy() # 매입 요청
-        # self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
+        result = self.analysis() # 분석(LSTM)
+        self.buy() # 매입 요청
+        self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
     
     def end(self):
         # TODO: monitoring을 종료시키기
@@ -330,12 +330,10 @@ class Form(QtWidgets.QDialog):
     def analysis(self): #TODO: 기본적으로 LSTM
         pass #TODO: 내일하기
     
-<<<<<<< HEAD
     def buy(self):
         res = self.kiwoom.dynamicCall("GetLoginInfo(\"USER_NAME\")")
         print(res)
         # pass
->>>>>>> af2019f192ba7bf18e48aec170a63901db615433
     
     def monitoring(self):
         self.monitoringThread = MonitoringThread() # 쓰레드 생성

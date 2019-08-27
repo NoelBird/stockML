@@ -195,6 +195,19 @@
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnAccountInfo">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>130</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>조회</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="grpBoxCtrlPanel">
     <property name="geometry">

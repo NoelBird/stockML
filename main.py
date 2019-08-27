@@ -39,6 +39,7 @@ class Form(QtWidgets.QDialog):
         # 함수 바인딩 부분
         self.ui.btnStart.clicked.connect(self.start) # 인공지능 투자 실행
         self.ui.btnEnd.clicked.connect(self.end) # 인공지능 투자 종료
+        self.ui.btnAccountInfo.clicked.connect(self.check_balance) # 계좌 정보 가져오기
 
         self.ui.btnSellPriceApply.clicked.connect(self.sellPriceApply)
         self.ui.btnSellPriceCancel.clicked.connect(self.sellPriceCancel)
@@ -87,7 +88,6 @@ class Form(QtWidgets.QDialog):
         self.ui.tblWgtTable.resizeRowsToContents()
 
     def start(self):
-        self.check_balance()
         data = self.getData("005930","20190826") # 데이터 얻어오기
         print(data)
         print('Done')

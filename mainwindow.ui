@@ -109,7 +109,7 @@
       <rect>
        <x>140</x>
        <y>130</y>
-       <width>52</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -122,7 +122,7 @@
       <rect>
        <x>140</x>
        <y>85</y>
-       <width>52</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -135,7 +135,7 @@
       <rect>
        <x>140</x>
        <y>17</y>
-       <width>40</width>
+       <width>181</width>
        <height>16</height>
       </rect>
      </property>
@@ -148,7 +148,7 @@
       <rect>
        <x>140</x>
        <y>40</y>
-       <width>40</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -161,7 +161,7 @@
       <rect>
        <x>140</x>
        <y>107</y>
-       <width>64</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -174,7 +174,7 @@
       <rect>
        <x>140</x>
        <y>62</y>
-       <width>40</width>
+       <width>191</width>
        <height>16</height>
       </rect>
      </property>
@@ -419,11 +419,11 @@
     <attribute name="horizontalHeaderCascadingSectionResizes">
      <bool>false</bool>
     </attribute>
-    <attribute name="horizontalHeaderMinimumSectionSize">
-     <number>34</number>
-    </attribute>
     <attribute name="horizontalHeaderDefaultSectionSize">
      <number>137</number>
+    </attribute>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>34</number>
     </attribute>
     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
      <bool>false</bool>
@@ -502,7 +502,7 @@
      <x>0</x>
      <y>0</y>
      <width>889</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

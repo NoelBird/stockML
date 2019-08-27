@@ -2,3 +2,5 @@ KOAStudioSA/
 .idea/
 *.autosave
 *.cpython-37.pyc
+.vscode/
+*-checkpoint.ipynb

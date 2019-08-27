@@ -112,6 +112,10 @@ class Form(QtWidgets.QDialog):
 
         df = DataFrame(self.kiwoom.ohlcv, columns=['open','high','low','close','volume'],
             index=self.kiwoom.ohlcv['date'])
+        
+        # df.to_csv('data.csv')
+        
+
 
         return df
 

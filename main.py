@@ -1,3 +1,4 @@
+# import open source
 import sys
 import datetime
 import time
@@ -14,6 +15,7 @@ from threading import Thread
 
 from pandas import DataFrame
 
+# import own source
 from Kiwoom import Kiwoom
 
 

@@ -39,6 +39,7 @@ class Form(QtWidgets.QDialog):
         # 함수 바인딩 부분
         self.ui.btnStart.clicked.connect(self.start) # 인공지능 투자 실행
         self.ui.btnEnd.clicked.connect(self.end) # 인공지능 투자 종료
+        self.ui.btnAccountInfo.clicked.connect(self.check_balance) # 계좌 정보 가져오기
 
         self.ui.btnSellPriceApply.clicked.connect(self.sellPriceApply)
         self.ui.btnSellPriceCancel.clicked.connect(self.sellPriceCancel)
@@ -49,16 +50,50 @@ class Form(QtWidgets.QDialog):
 
         self.ui.show()
 
-        self.ui.tblWgtTable.setItem(0 , 0, QTableWidgetItem("text1"))
         # self.ui.previewSmall.setPixmap(QPixmap('cat04_256.png'))
     
+    def check_balance(self):
+        self.kiwoom.reset_opw00018_output()
+        account_number = self.kiwoom.get_login_info('ACCNO') # 계좌번호를 가져옴
+        account_number = account_number.split(';')[0]
+
+        #가져온 계좌번호를 통해 보유하고 있는 종목을 가져오
+        self.kiwoom.set_input_value("계좌번호", account_number)
+        self.kiwoom.comm_rq_data("opw00018_req","opw00018",0,"2000")
+
+        while self.kiwoom.remained_data:
+            time.sleep(0.2)
+            self.kiwoom.set_input_value("계좌번호", account_number)
+            self.kiwoom.comm_rq_data("opw00018_req","opw00018",2,"2000")
+
+        #현재 내 계좌 현황
+        item = self.kiwoom.opw00018_output['single']
+        self.ui.lblTotalBuy.setText(item[0])
+        self.ui.lblTotalEvaluation.setText(item[1])
+        self.ui.lblEvalProfit.setText(item[2])
+        self.ui.lblEvalProfitRatio.setText(item[3])
+        self.ui.lblTotalAssets.setText(item[4])
+
+        #보유 주식에 대한 정보 출력
+        item_count = len(self.kiwoom.opw00018_output['multi'])
+        self.ui.tblWgtTable.setRowCount(item_count)
+
+        for j in range(item_count):
+            row = self.kiwoom.opw00018_output['multi'][j]
+            for i in range(len(row)):
+                item = QTableWidgetItem(row[i])
+                #item.setTextAlignment(Qt.AlignVCenter | Qt.AlignRight)
+                self.ui.tblWgtTable.setItem(j, i, item)
+        
+        self.ui.tblWgtTable.resizeRowsToContents()
+
     def start(self):
         data = self.getData("005930","20190826") # 데이터 얻어오기
         print(data)
         print('Done')
-        # result = self.analysis() # 분석(LSTM)
-        # self.buy() # 매입 요청
-        # self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
+        result = self.analysis() # 분석(LSTM)
+        self.buy() # 매입 요청
+        self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
     
     def end(self):
         # TODO: monitoring을 종료시키기
@@ -109,6 +144,7 @@ class Form(QtWidgets.QDialog):
     def login(self):
         # self.kiwoom = QAxWidget("KHOPENAPI.KHOpenAPICtrl.1")
         self.kiwoom.comm_connect()
+        
     
     def logout(self):
         pass

@@ -195,6 +195,19 @@
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnAccountInfo">
+     <property name="geometry">
+      <rect>
+       <x>340</x>
+       <y>130</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>조회</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="grpBoxCtrlPanel">
     <property name="geometry">
@@ -458,12 +471,7 @@
     </column>
     <column>
      <property name="text">
-      <string>평가 손익</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>주문량</string>
+      <string>보유량</string>
      </property>
     </column>
     <column>
@@ -478,7 +486,12 @@
     </column>
     <column>
      <property name="text">
-      <string>보유 비중</string>
+      <string>평가 손익</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>수익률</string>
      </property>
     </column>
    </widget>

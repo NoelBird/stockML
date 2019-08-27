@@ -131,7 +131,7 @@ class Kiwoom(QAxWidget):
     @staticmethod
     def change_format(data):
         strip_data = data.lstrip('-0')
-        if strip_data == '':
+        if strip_data == '' or strip_data == '.00':
             strip_data = '0'
 
         format_data = format(int(strip_data), ',d')
@@ -176,15 +176,15 @@ class Kiwoom(QAxWidget):
         total_eval_profit_loss_price = self._comm_get_data(trcode, "", rqname, 0, "총평가손익금액")
         total_earning_rate = self._comm_get_data(trcode, "", rqname, 0, "총수익률(%)")
         estimated_deposit  = self._comm_get_data(trcode, "", rqname, 0, "추정예탁자산")
-
-        if self.get_server_gubun():
-            total_earning_rate = float(total_earning_rate) / 100
-            total_earning_rate = str(total_earning_rate)
+        
+        #모의투자일 경우에는 아래와 같은 수익률 계산법을 사용해야 한다.
+        total_earning_rate = float(total_earning_rate) / 100
+        total_earning_rate = str(total_earning_rate)
 
         self.opw00018_output['single'].append(Kiwoom.change_format(total_purchase_price))
         self.opw00018_output['single'].append(Kiwoom.change_format(total_eval_price))
         self.opw00018_output['single'].append(Kiwoom.change_format(total_eval_profit_loss_price))
-        self.opw00018_output['single'].append(Kiwoom.change_format(total_earning_rate))
+        self.opw00018_output['single'].append(Kiwoom.change_format2(total_earning_rate))
         self.opw00018_output['single'].append(Kiwoom.change_format(estimated_deposit))
 
         # multi data
@@ -197,11 +197,15 @@ class Kiwoom(QAxWidget):
             eval_profit_loss_price = self._comm_get_data(trcode, "", rqname, i, "평가손익")
             earning_rate           = self._comm_get_data(trcode, "", rqname, i, "수익률(%)")
 
+            earning_rate = float(earning_rate) / 100
+            earning_rate = str(earning_rate)
+
             quantity = Kiwoom.change_format(quantity)
             purchase_price = Kiwoom.change_format(purchase_price)
             current_price = Kiwoom.change_format(current_price)
             eval_profit_loss_price = Kiwoom.change_format(eval_profit_loss_price)
             earning_rate = Kiwoom.change_format2(earning_rate)
+
 
             self.opw00018_output['multi'].append([name, quantity, purchase_price, current_price,
                                                   eval_profit_loss_price, earning_rate])

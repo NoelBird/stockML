@@ -458,12 +458,7 @@
     </column>
     <column>
      <property name="text">
-      <string>평가 손익</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>주문량</string>
+      <string>보유량</string>
      </property>
     </column>
     <column>
@@ -478,7 +473,12 @@
     </column>
     <column>
      <property name="text">
-      <string>보유 비중</string>
+      <string>평가 손익</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>수익률</string>
      </property>
     </column>
    </widget>

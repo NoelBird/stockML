@@ -55,9 +55,9 @@ class Form(QtWidgets.QDialog):
         pass #TODO: 내일하기
     
     def buy(self):
-        # res = self.kiwoom.dynamicCall("GetLoginInfo()")
-        # print(res)
-        pass
+        res = self.kiwoom.dynamicCall("GetLoginInfo(\"USER_NAME\")")
+        print(res)
+        # pass
     
     def monitoring(self):
         self.monitoringThread = MonitoringThread() # 쓰레드 생성

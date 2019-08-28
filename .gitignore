@@ -4,3 +4,6 @@ KOAStudioSA/
 *.cpython-37.pyc
 .vscode/
 *-checkpoint.ipynb
+data.csv
+code_tests/data2.csv
+code_tests/data.csv

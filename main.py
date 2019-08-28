@@ -15,6 +15,8 @@ from threading import Thread
 
 from pandas import DataFrame
 
+import asyncio
+
 # import own source
 from Kiwoom import Kiwoom
 
@@ -33,6 +35,7 @@ class Form(QtWidgets.QDialog):
         self.time_end = 0
         self.upperLimit = 0
         self.lowerLimit = 0
+        self.data = None # 주식 table
 
         self.kiwoom = Kiwoom()
 
@@ -88,8 +91,9 @@ class Form(QtWidgets.QDialog):
         self.ui.tblWgtTable.resizeRowsToContents()
 
     def start(self):
-        data = self.getData("005930","20190826") # 데이터 얻어오기
-        print(data)
+        now = datetime.datetime.now().strftime('%Y%m%d')
+        self.data = self.getData("038160",now) # 데이터 얻어오기
+        print(self.data)
         print('Done')
         result = self.analysis() # 분석(LSTM)
         self.buy() # 매입 요청
@@ -119,8 +123,26 @@ class Form(QtWidgets.QDialog):
 
         return df
 
-    def analysis(self): #TODO: 기본적으로 LSTM
-        pass #TODO: 내일하기
+    def analysis(self):
+        BUFSIZE = 2**30 # about 1 GB
+        async def tcp_echo_client(message):
+            reader, writer = await asyncio.open_connection('127.0.0.1', 13513)
+            
+
+            print(f'Send: {message!r}')
+            # writer.write(message.encode())
+            self.data.to_csv('./code_tests/data.csv') # 파일을 먼저 저장해준 다음
+            with open('./code_tests/data.csv', 'rb') as f:
+                d = f.read()
+            writer.write(d) # 저장된 메세지만 날리기
+
+            data = await reader.read(BUFSIZE)
+            print(f'Received: {data.decode()!r}')
+
+            print('Close the connection')
+            writer.close()
+
+        asyncio.run(tcp_echo_client('Hello World!'))
     
     def buy(self):
         res = self.kiwoom.dynamicCall("GetLoginInfo(\"USER_NAME\")")

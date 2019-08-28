@@ -14,6 +14,7 @@ from PyQt5.QtCore import QThread, pyqtSignal
 from threading import Thread
 
 from pandas import DataFrame
+import pandas as pd
 
 import asyncio
 
@@ -36,6 +37,7 @@ class Form(QtWidgets.QDialog):
         self.upperLimit = 0
         self.lowerLimit = 0
         self.data = None # 주식 table
+        self.item = 0
 
         self.kiwoom = Kiwoom()
 
@@ -70,12 +72,13 @@ class Form(QtWidgets.QDialog):
             self.kiwoom.comm_rq_data("opw00018_req","opw00018",2,"2000")
 
         #현재 내 계좌 현황
-        item = self.kiwoom.opw00018_output['single']
-        self.ui.lblTotalBuy.setText(item[0])
-        self.ui.lblTotalEvaluation.setText(item[1])
-        self.ui.lblEvalProfit.setText(item[2])
-        self.ui.lblEvalProfitRatio.setText(item[3])
-        self.ui.lblTotalAssets.setText(item[4])
+        self.item = self.kiwoom.opw00018_output['single']
+        self.ui.lblTotalBuy.setText(self.item[0])
+        self.ui.lblTotalEvaluation.setText(self.item[1])
+        self.ui.lblEvalProfit.setText(self.item[2])
+        self.ui.lblEvalProfitRatio.setText(self.item[3])
+        self.ui.lblTotalAssets.setText(self.item[4])
+        self.ui.lblRemainAssets.setText(self.item[5])
 
         #보유 주식에 대한 정보 출력
         item_count = len(self.kiwoom.opw00018_output['multi'])
@@ -96,13 +99,14 @@ class Form(QtWidgets.QDialog):
         print(self.data)
         print('Done')
         result = self.analysis() # 분석(LSTM)
-        self.buy() # 매입 요청
+        self.trade_stocks() # 매입 요청
         self.monitoring() # TODO: 멀티쓰레딩으로 구현하기. 적정 주가 매도
     
     def end(self):
         # TODO: monitoring을 종료시키기
         self.ui.lblRunningTime.setText('0:00:00')
     
+    #개인 계좌 정보 및 보유 주식목록 가져오기
     def getData(self, code, start):
         self.kiwoom.ohlcv ={'date': [], 'open': [],'high': [],'low': [],'close': [],'volume': []}
 
@@ -117,9 +121,7 @@ class Form(QtWidgets.QDialog):
         df = DataFrame(self.kiwoom.ohlcv, columns=['open','high','low','close','volume'],
             index=self.kiwoom.ohlcv['date'])
         
-        # df.to_csv('data.csv')
-        
-
+        df.to_csv(code + '.csv')
 
         return df
 
@@ -143,6 +145,36 @@ class Form(QtWidgets.QDialog):
             writer.close()
 
         asyncio.run(tcp_echo_client('Hello World!'))
+            
+    def trade_stocks(self):
+        hoga_lookup = {'지정가': "00", '시장가': "03"}
+
+        #주식 거래 시 필요한 계좌번호 추출
+        account = self.kiwoom.get_login_info('ACCNO') # 계좌번호를 가져옴
+        account = account.split(';')[0]
+
+        remain_deposit = self.check_balance().item[6]
+        
+        f = open("buy_list.csv", "rt")
+        total_list = f.readlines()
+        f.close()
+
+        row_count = len(total_list)
+
+        for j in range(row_count):
+            row_data = total_list[j]
+            split_row_data = row_data.split(';')
+            if split_row_data[2] > 0:
+                code = split_row_data[0]
+                hoga = '시장가'
+                self.kiwoom.set_input_value("종목코드", code)
+                price = self.kiwoom._opt10001("opt_10001_req","opt10001").price
+                num = int(remain_deposit / price)
+                self.kiwoom.send_order("send_order_req","0101",account,2,code,num,0,hoga_lookup[hoga],"")
+
+
+    def analysis(self): #TODO: 기본적으로 LSTM
+        pass #TODO: 내일하기
     
     def buy(self):
         res = self.kiwoom.dynamicCall("GetLoginInfo(\"USER_NAME\")")

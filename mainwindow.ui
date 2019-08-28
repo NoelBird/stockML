@@ -101,7 +101,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>실현 손익</string>
+      <string>잔고</string>
      </property>
     </widget>
     <widget class="QLabel" name="lblRealProfit">
@@ -419,11 +419,11 @@
     <attribute name="horizontalHeaderCascadingSectionResizes">
      <bool>false</bool>
     </attribute>
-    <attribute name="horizontalHeaderDefaultSectionSize">
-     <number>137</number>
-    </attribute>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>34</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>137</number>
     </attribute>
     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
      <bool>false</bool>
@@ -502,7 +502,7 @@
      <x>0</x>
      <y>0</y>
      <width>889</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

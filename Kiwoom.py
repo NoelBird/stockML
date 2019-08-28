@@ -163,7 +163,9 @@ class Kiwoom(QAxWidget):
     # 주식 기본정보
     def _opt10001(self, rqname, trcode):
         
-        self.price = self._comm_get_data(trcode,"", rqname, 0,"현재가")
+        price = self._comm_get_data(trcode,"", rqname, 0,"현재가")
+
+        return price
 
     #
     def _opw00001(self, rqname, trcode):

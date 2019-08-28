@@ -88,7 +88,7 @@ class Form(QtWidgets.QDialog):
         self.ui.tblWgtTable.resizeRowsToContents()
 
     def start(self):
-        data = self.getData("005930","20190826") # 데이터 얻어오기
+        data = self.getData("038160","20190827") # 데이터 얻어오기
         print(data)
         print('Done')
         result = self.analysis() # 분석(LSTM)

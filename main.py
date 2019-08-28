@@ -75,7 +75,7 @@ class Form(QtWidgets.QDialog):
         self.ui.lblEvalProfit.setText(self.item[2])
         self.ui.lblEvalProfitRatio.setText(self.item[3])
         self.ui.lblTotalAssets.setText(self.item[4])
-        self.ui.lblRemainAssets.setText(self.item[5])
+        self.ui.lblRemainAssets.setText(str(self.item[5]))
 
         #보유 주식에 대한 정보 출력
         item_count = len(self.kiwoom.opw00018_output['multi'])
@@ -129,9 +129,10 @@ class Form(QtWidgets.QDialog):
         account = self.kiwoom.get_login_info('ACCNO') # 계좌번호를 가져옴
         account = account.split(';')[0]
 
-        remain_deposit = self.check_balance().item[6]
+        self.check_balance()
+        remain_deposit =self.item[5]
         
-        f = open("buy_list.csv", "rt")
+        f = open("buy_list.txt", "rt")
         total_list = f.readlines()
         f.close()
 
@@ -140,12 +141,12 @@ class Form(QtWidgets.QDialog):
         for j in range(row_count):
             row_data = total_list[j]
             split_row_data = row_data.split(';')
-            if split_row_data[2] > 0:
+            if float(split_row_data[2]) > 0:
                 code = split_row_data[0]
                 hoga = '시장가'
                 self.kiwoom.set_input_value("종목코드", code)
-                price = self.kiwoom._opt10001("opt_10001_req","opt10001").price
-                num = int(remain_deposit / price)
+                price = self.kiwoom._opt10001("opt_10001_req","opt10001")
+                num = int(int(remain_deposit) / int(price))
                 self.kiwoom.send_order("send_order_req","0101",account,2,code,num,0,hoga_lookup[hoga],"")
 
 

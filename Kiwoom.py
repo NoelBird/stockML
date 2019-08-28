@@ -177,7 +177,7 @@ class Kiwoom(QAxWidget):
         total_eval_profit_loss_price = self._comm_get_data(trcode, "", rqname, 0, "총평가손익금액")
         total_earning_rate = self._comm_get_data(trcode, "", rqname, 0, "총수익률(%)")
         estimated_deposit  = self._comm_get_data(trcode, "", rqname, 0, "추정예탁자산")
-        remain_deposit = total_eval_price - total_purchase_price
+        remain_deposit = int(estimated_deposit) - int(total_purchase_price)
         
         #모의투자일 경우에는 아래와 같은 수익률 계산법을 사용해야 한다.
         total_earning_rate = float(total_earning_rate) / 100
@@ -188,8 +188,8 @@ class Kiwoom(QAxWidget):
         self.opw00018_output['single'].append(Kiwoom.change_format(total_eval_profit_loss_price))
         self.opw00018_output['single'].append(Kiwoom.change_format2(total_earning_rate))
         self.opw00018_output['single'].append(Kiwoom.change_format(estimated_deposit))
-        self.opw00018_output['single'].append(Kiwoom.change_format(remain_deposit))
         self.opw00018_output['single'].append(remain_deposit)
+        
 
         # multi data
         rows = self._get_repeat_cnt(trcode, rqname)

@@ -104,7 +104,7 @@
       <string>잔고</string>
      </property>
     </widget>
-    <widget class="QLabel" name="lblRealProfit">
+    <widget class="QLabel" name="lblRemainAssets">
      <property name="geometry">
       <rect>
        <x>140</x>

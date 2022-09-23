@@ -15,7 +15,7 @@ mkl-random==1.0.2
 mkl-service==2.0.2
 numpy==1.16.4
 pandas==0.25.1
-protobuf==3.9.0
+protobuf==3.18.3
 pylint==2.3.1
 PyQt5==5.13.0
 PyQt5-sip==4.19.18
